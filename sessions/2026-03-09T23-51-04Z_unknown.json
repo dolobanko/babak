@@ -1,0 +1,26 @@
+{
+  "sessionId": "df29a149-a529-4667-94d1-ee89ae2a8a9c",
+  "model": "gemini-3-flash-preview",
+  "startedAt": "2026-03-09T16:54:11.120Z",
+  "endedAt": "2026-03-09T23:51:04.328Z",
+  "durationMs": 25012795,
+  "costUsd": 0.0648,
+  "tokensUsed": 33857,
+  "inputTokens": 19481,
+  "outputTokens": 141,
+  "toolCalls": 0,
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "prompts": [
+    "write 2 lines hello word app"
+  ],
+  "filesChanged": [],
+  "promptChanges": [],
+  "git": {
+    "headBefore": "",
+    "headAfter": "",
+    "commitShas": []
+  },
+  "summary": "I'll verify the script runs as expected.",
+  "originUrl": "https://origin-platform.fly.dev/sessions/df29a149-a529-4667-94d1-ee89ae2a8a9c"
+}
