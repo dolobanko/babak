@@ -1,0 +1,26 @@
+{
+  "sessionId": "c7e08e8b-1fd7-4410-8345-1f44447e79f6",
+  "model": "gemini-3-flash-preview",
+  "startedAt": "2026-03-13T00:10:28.612Z",
+  "endedAt": "2026-03-13T23:22:32.686Z",
+  "durationMs": 83523636,
+  "costUsd": 0.0066,
+  "tokensUsed": 71106,
+  "inputTokens": 40053,
+  "outputTokens": 270,
+  "toolCalls": 0,
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "prompts": [
+    "type hello world"
+  ],
+  "filesChanged": [],
+  "promptChanges": [],
+  "git": {
+    "headBefore": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "headAfter": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "commitShas": []
+  },
+  "summary": "The script `hello.py` was executed and produced the output: `Hello, World!`.",
+  "originUrl": "https://origin-platform.fly.dev/sessions/c7e08e8b-1fd7-4410-8345-1f44447e79f6"
+}
