@@ -1,0 +1,27 @@
+{
+  "sessionId": "b2e4a46f-eb9c-40c7-a984-7000041c149e",
+  "model": "gemini-3-flash-preview",
+  "startedAt": "2026-03-13T23:27:48.111Z",
+  "endedAt": "2026-03-13T23:45:23.413Z",
+  "durationMs": 1054976,
+  "costUsd": 0.0053,
+  "tokensUsed": 58342,
+  "inputTokens": 32418,
+  "outputTokens": 167,
+  "toolCalls": 0,
+  "linesAdded": 0,
+  "linesRemoved": 0,
+  "prompts": [
+    "type hello world",
+    "print \"hey\""
+  ],
+  "filesChanged": [],
+  "promptChanges": [],
+  "git": {
+    "headBefore": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "headAfter": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "commitShas": []
+  },
+  "summary": "\"hey\" has been printed.",
+  "originUrl": "https://origin-platform.fly.dev/sessions/b2e4a46f-eb9c-40c7-a984-7000041c149e"
+}
