@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "sessionId": "dcdca455-6422-43ab-9525-47eb4d6b39f4",
+  "model": "gemini-3-flash-preview",
+  "startedAt": "2026-03-14T00:21:36.247Z",
+  "endedAt": "2026-03-14T00:22:08.172Z",
+  "durationMs": 31909,
+  "status": "running",
+  "tokens": {
+    "total": 31062,
+    "input": 19468,
+    "output": 101
+  },
+  "cost": {
+    "usd": 0.0032
+  },
+  "toolCalls": 0,
+  "lines": {
+    "added": 0,
+    "removed": 0
+  },
+  "filesChanged": [],
+  "git": {
+    "branch": "test/policy-check",
+    "headBefore": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "headAfter": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "commitShas": []
+  },
+  "summary": "Done.",
+  "originUrl": "https://origin-platform.fly.dev/sessions/dcdca455-6422-43ab-9525-47eb4d6b39f4"
+}
