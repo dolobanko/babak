@@ -3,9 +3,9 @@
   "sessionId": "dcdca455-6422-43ab-9525-47eb4d6b39f4",
   "model": "gemini-3-flash-preview",
   "startedAt": "2026-03-14T00:21:36.247Z",
-  "endedAt": "2026-03-14T00:26:29.014Z",
-  "durationMs": 292752,
-  "status": "running",
+  "endedAt": "2026-03-14T00:56:30.066Z",
+  "durationMs": 2093800,
+  "status": "ended",
   "tokens": {
     "total": 66416,
     "input": 40228,
