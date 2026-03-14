@@ -3,16 +3,16 @@
   "sessionId": "dcdca455-6422-43ab-9525-47eb4d6b39f4",
   "model": "gemini-3-flash-preview",
   "startedAt": "2026-03-14T00:21:36.247Z",
-  "endedAt": "2026-03-14T00:24:56.113Z",
-  "durationMs": 199852,
+  "endedAt": "2026-03-14T00:26:29.014Z",
+  "durationMs": 292752,
   "status": "running",
   "tokens": {
-    "total": 56346,
-    "input": 33125,
-    "output": 191
+    "total": 66416,
+    "input": 40228,
+    "output": 233
   },
   "cost": {
-    "usd": 0.0054
+    "usd": 0.0066
   },
   "toolCalls": 0,
   "lines": {
@@ -26,6 +26,6 @@
     "headAfter": "e35f9171c072212fcd2b844d8c00d212441042e1",
     "commitShas": []
   },
-  "summary": "You can use the `/stats model` command to see the detailed token usage for the last request and the current session. Additionally, the context usage percentage is typically displayed in the CLI footer.",
+  "summary": "It looks like there was a typo! You should type **`/stats model`** (with an 's') directly into your terminal prompt to see the token usage for the last request and the current session.",
   "originUrl": "https://origin-platform.fly.dev/sessions/dcdca455-6422-43ab-9525-47eb4d6b39f4"
 }
