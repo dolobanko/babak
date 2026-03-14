@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "sessionId": "47e2fca7-bb0e-45d8-8feb-be66eb562ef7",
+  "model": "gemini-3-flash-preview",
+  "startedAt": "2026-03-14T01:07:04.110Z",
+  "endedAt": "2026-03-14T01:09:34.596Z",
+  "durationMs": 150471,
+  "status": "running",
+  "tokens": {
+    "total": 157769,
+    "input": 102972,
+    "output": 888
+  },
+  "cost": {
+    "usd": 0.0168
+  },
+  "toolCalls": 0,
+  "lines": {
+    "added": 0,
+    "removed": 0
+  },
+  "filesChanged": [],
+  "git": {
+    "branch": "test/policy-check",
+    "headBefore": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "headAfter": "e35f9171c072212fcd2b844d8c00d212441042e1",
+    "commitShas": []
+  },
+  "summary": "I use a multi-layered system prompt that defines my role as a senior software engineer and collaborative peer programmer. It consists of:\n\n1.  **Core Mandates:** Strict rules for security (protecting credentials), system integrity (source control safety), and context efficiency to keep our session fast.\n2.  **Engineering Standards:** I prioritize project-specific conventions found in `GEMINI.md` files, verify all assumptions with empirical research, and follow a rigorous **Research → Strategy → ...",
+  "originUrl": "https://origin-platform.fly.dev/sessions/47e2fca7-bb0e-45d8-8feb-be66eb562ef7"
+}
