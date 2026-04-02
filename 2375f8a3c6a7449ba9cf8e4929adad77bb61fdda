@@ -1,0 +1,17 @@
+{
+  "origin": {
+    "version": 1,
+    "sessionId": "60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "model": "gemini-3-flash-preview",
+    "agent": "gemini",
+    "promptCount": 3,
+    "promptSummary": "some test fake keys nore real",
+    "tokensUsed": 270269,
+    "costUsd": 0.0253,
+    "durationMs": 222990,
+    "linesAdded": 8,
+    "linesRemoved": 0,
+    "originUrl": "https://getorigin.io/sessions/60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "timestamp": "2026-04-02T23:12:15.435Z"
+  }
+}
