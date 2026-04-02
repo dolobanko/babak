@@ -1,7 +1,7 @@
 import argparse
 
-def greet(name="World"):
-    return f"Hello, {name}!"
+def greet(name="World!"):
+    return f"Hello, {name}"
 
 def main():
     parser = argparse.ArgumentParser(description="A simple Hello World CLI app.")
