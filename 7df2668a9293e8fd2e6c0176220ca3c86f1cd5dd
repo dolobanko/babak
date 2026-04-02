@@ -1,0 +1,17 @@
+{
+  "origin": {
+    "version": 1,
+    "sessionId": "60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "model": "gemini-3-flash-preview",
+    "agent": "gemini",
+    "promptCount": 7,
+    "promptSummary": "switch to other brach make some changes and create a PR",
+    "tokensUsed": 848644,
+    "costUsd": 0.0789,
+    "durationMs": 1932333,
+    "linesAdded": 4,
+    "linesRemoved": 1,
+    "originUrl": "https://getorigin.io/sessions/60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "timestamp": "2026-04-02T23:40:44.839Z"
+  }
+}
