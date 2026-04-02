@@ -1,0 +1,17 @@
+{
+  "origin": {
+    "version": 1,
+    "sessionId": "60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "model": "gemini-3-flash-preview",
+    "agent": "gemini",
+    "promptCount": 1,
+    "promptSummary": "make some small change and commit",
+    "tokensUsed": 59066,
+    "costUsd": 0.0059,
+    "durationMs": 59458,
+    "linesAdded": 5,
+    "linesRemoved": 2,
+    "originUrl": "https://getorigin.io/sessions/60c43ddc-cc18-4dc9-b1fe-95393f663a0e",
+    "timestamp": "2026-04-02T23:09:31.728Z"
+  }
+}
