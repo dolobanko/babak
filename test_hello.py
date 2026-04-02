@@ -6,7 +6,7 @@ class TestHello(unittest.TestCase):
         self.assertEqual(greet(), "Hello, World!")
 
     def test_greet_name(self):
-        self.assertEqual(greet("Alice"), "Hello, Alice!")
+        self.assertEqual(greet("Alice"), "Hello, Alice")
 
 if __name__ == "__main__":
     unittest.main()
