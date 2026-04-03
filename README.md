@@ -1,3 +1,12 @@
-# Babak Project\nLast updated: Wed Mar 11 11:58:30 EDT 2026
-\nTesting branch policies for origin.
-\nUpdate at Wed Mar 11 12:29:20 EDT 2026
+# Babak Project
+
+Last updated: Thu Apr 2 2026
+
+Testing branch policies for origin.
+
+## Scripts
+
+- `hello.py` — CLI greeter with optional name argument
+- `hello_world.py` — simple Hello World entry point
+- `test_hello.py` — unit tests for the greeter
+
