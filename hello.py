@@ -1,14 +1,15 @@
 import argparse
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
-def greet(name="World", uppercase=False, greeting="Hello"):
+def greet(name="World", uppercase=False, greeting="Hello", quiet=False):
     """
     Generates a greeting message.
     """
     normalized_name = (name or "").strip() or "World"
     normalized_greeting = (greeting or "").strip() or "Hello"
-    message = f"{normalized_greeting}, {normalized_name}!"
+    punctuation = "" if quiet else "!"
+    message = f"{normalized_greeting}, {normalized_name}{punctuation}"
     if uppercase:
         return message.upper()
     return message
@@ -27,6 +28,11 @@ def main():
         help="Customize the greeting prefix.",
     )
     parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Omit the exclamation mark.",
+    )
+    parser.add_argument(
         "--repeat",
         type=int,
         default=1,
@@ -38,7 +44,7 @@ def main():
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
-    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting)
+    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet)
     for _ in range(args.repeat):
         print(message)
 
