@@ -1,5 +1,7 @@
 import argparse
 
+VERSION = "1.0.1"
+
 def greet(name="World", uppercase=False, greeting="Hello"):
     normalized_name = (name or "").strip() or "World"
     normalized_greeting = (greeting or "").strip() or "Hello"
@@ -20,6 +22,11 @@ def main():
         "--greeting",
         default="Hello",
         help="Customize the greeting prefix.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
     print(greet(args.name, uppercase=args.uppercase, greeting=args.greeting))

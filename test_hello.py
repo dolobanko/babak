@@ -1,7 +1,10 @@
 import unittest
-from hello import greet
+from hello import greet, VERSION
 
 class TestHello(unittest.TestCase):
+    def test_version_defined(self):
+        self.assertEqual(VERSION, "1.0.1")
+
     def test_greet_default(self):
         self.assertEqual(greet(), "Hello, World!")
 
