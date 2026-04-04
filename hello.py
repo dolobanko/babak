@@ -1,6 +1,6 @@
 import argparse
 
-VERSION = "1.0.4"
+VERSION = "1.0.5"
 
 def greet(name="World", uppercase=False, greeting="Hello", quiet=False, reverse=False):
     """
@@ -46,6 +46,11 @@ def main():
         help="Number of times to repeat the greeting.",
     )
     parser.add_argument(
+        "--count",
+        action="store_true",
+        help="Show the character count of the greeting.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -54,6 +59,8 @@ def main():
     message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse)
     for _ in range(args.repeat):
         print(message)
+    if args.count:
+        print(f"({len(message)} characters)")
 
 if __name__ == "__main__":
     main()
