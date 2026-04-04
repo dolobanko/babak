@@ -18,4 +18,5 @@ python hello.py Alice
 python hello.py "   "
 python hello.py Alice --uppercase
 python hello.py Alice --greeting Hi
+python hello.py Alice --greeting "   "
 ```
