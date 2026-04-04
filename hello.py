@@ -3,6 +3,9 @@ import argparse
 VERSION = "1.0.1"
 
 def greet(name="World", uppercase=False, greeting="Hello"):
+    """
+    Generates a greeting message.
+    """
     normalized_name = (name or "").strip() or "World"
     normalized_greeting = (greeting or "").strip() or "Hello"
     message = f"{normalized_greeting}, {normalized_name}!"
