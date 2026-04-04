@@ -6,7 +6,7 @@ Testing branch policies for origin.
 
 ## Scripts
 
-- `hello.py` — CLI greeter with optional name argument and `--uppercase` mode
+- `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, and a custom `--greeting`
 - `hello_world.py` — simple Hello World entry point
 - `test_hello.py` — unit tests for the greeter
 
@@ -17,4 +17,5 @@ python hello.py
 python hello.py Alice
 python hello.py "   "
 python hello.py Alice --uppercase
+python hello.py Alice --greeting Hi
 ```

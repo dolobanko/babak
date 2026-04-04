@@ -1,8 +1,9 @@
 import argparse
 
-def greet(name="World", uppercase=False):
+def greet(name="World", uppercase=False, greeting="Hello"):
     normalized_name = (name or "").strip() or "World"
-    message = f"Hello, {normalized_name}!"
+    normalized_greeting = (greeting or "").strip() or "Hello"
+    message = f"{normalized_greeting}, {normalized_name}!"
     if uppercase:
         return message.upper()
     return message
@@ -15,8 +16,13 @@ def main():
         action="store_true",
         help="Print the greeting in uppercase.",
     )
+    parser.add_argument(
+        "--greeting",
+        default="Hello",
+        help="Customize the greeting prefix.",
+    )
     args = parser.parse_args()
-    print(greet(args.name, uppercase=args.uppercase))
+    print(greet(args.name, uppercase=args.uppercase, greeting=args.greeting))
 
 if __name__ == "__main__":
     main()
