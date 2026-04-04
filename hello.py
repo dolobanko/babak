@@ -27,12 +27,20 @@ def main():
         help="Customize the greeting prefix.",
     )
     parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help="Number of times to repeat the greeting.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
-    print(greet(args.name, uppercase=args.uppercase, greeting=args.greeting))
+    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting)
+    for _ in range(args.repeat):
+        print(message)
 
 if __name__ == "__main__":
     main()
