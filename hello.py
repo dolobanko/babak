@@ -1,16 +1,18 @@
 import argparse
 
-VERSION = "1.0.5"
+VERSION = "1.0.7"
 
-def greet(name="World", uppercase=False, greeting="Hello", quiet=False, reverse=False):
+def greet(name="World", uppercase=False, greeting="Hello", quiet=False, reverse=False, separator=", ", shout=False):
     """
     Generates a greeting message.
     """
     normalized_name = (name or "").strip() or "World"
     normalized_greeting = (greeting or "").strip() or "Hello"
     punctuation = "" if quiet else "!"
-    message = f"{normalized_greeting}, {normalized_name}{punctuation}"
-    if uppercase:
+    message = f"{normalized_greeting}{separator}{normalized_name}{punctuation}"
+    if shout:
+        message = message.upper() + "!!!"
+    elif uppercase:
         message = message.upper()
     if reverse:
         message = message[::-1]
@@ -46,6 +48,16 @@ def main():
         help="Number of times to repeat the greeting.",
     )
     parser.add_argument(
+        "--separator",
+        default=", ",
+        help="Separator between greeting and name (default: ', ').",
+    )
+    parser.add_argument(
+        "--shout",
+        action="store_true",
+        help="Print the greeting in uppercase with extra exclamation marks.",
+    )
+    parser.add_argument(
         "--count",
         action="store_true",
         help="Show the character count of the greeting.",
@@ -56,7 +68,7 @@ def main():
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
-    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse)
+    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
     for _ in range(args.repeat):
         print(message)
     if args.count:
