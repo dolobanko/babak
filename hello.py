@@ -1,6 +1,6 @@
 import argparse
 
-VERSION = "1.0.9"
+VERSION = "1.0.10"
 
 COLORS = {
     "red": "\033[31m",
@@ -78,6 +78,11 @@ def main():
         help="Colorize the greeting output.",
     )
     parser.add_argument(
+        "--border",
+        action="store_true",
+        help="Wrap the greeting in a decorative border.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -85,6 +90,9 @@ def main():
     args = parser.parse_args()
     message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
     output = f"{COLORS[args.color]}{message}{RESET}" if args.color else message
+    if args.border:
+        border_line = "+" + "-" * (len(message) + 2) + "+"
+        output = f"{border_line}\n| {output} |\n{border_line}"
     for _ in range(args.repeat):
         print(output)
     if args.count:
