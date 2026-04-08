@@ -1,6 +1,7 @@
 import argparse
+from datetime import datetime
 
-VERSION = "1.0.10"
+VERSION = "1.0.11"
 
 COLORS = {
     "red": "\033[31m",
@@ -83,12 +84,20 @@ def main():
         help="Wrap the greeting in a decorative border.",
     )
     parser.add_argument(
+        "--timestamp",
+        action="store_true",
+        help="Prepend the current date and time to the greeting.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
     message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
+    if args.timestamp:
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        message = f"[{ts}] {message}"
     output = f"{COLORS[args.color]}{message}{RESET}" if args.color else message
     if args.border:
         border_line = "+" + "-" * (len(message) + 2) + "+"
