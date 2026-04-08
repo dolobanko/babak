@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime
 
-VERSION = "1.0.11"
+VERSION = "1.0.12"
 
 COLORS = {
     "red": "\033[31m",
@@ -12,6 +12,46 @@ COLORS = {
     "cyan": "\033[36m",
 }
 RESET = "\033[0m"
+
+BLOCK_LETTERS = {
+    'A': ["  #  ", " # # ", "#####", "#   #", "#   #"],
+    'B': ["#### ", "#   #", "#### ", "#   #", "#### "],
+    'C': [" ####", "#    ", "#    ", "#    ", " ####"],
+    'D': ["#### ", "#   #", "#   #", "#   #", "#### "],
+    'E': ["#####", "#    ", "###  ", "#    ", "#####"],
+    'F': ["#####", "#    ", "###  ", "#    ", "#    "],
+    'G': [" ####", "#    ", "# ###", "#   #", " ####"],
+    'H': ["#   #", "#   #", "#####", "#   #", "#   #"],
+    'I': ["#####", "  #  ", "  #  ", "  #  ", "#####"],
+    'J': ["#####", "    #", "    #", "#   #", " ### "],
+    'K': ["#   #", "#  # ", "###  ", "#  # ", "#   #"],
+    'L': ["#    ", "#    ", "#    ", "#    ", "#####"],
+    'M': ["#   #", "## ##", "# # #", "#   #", "#   #"],
+    'N': ["#   #", "##  #", "# # #", "#  ##", "#   #"],
+    'O': [" ### ", "#   #", "#   #", "#   #", " ### "],
+    'P': ["#### ", "#   #", "#### ", "#    ", "#    "],
+    'Q': [" ### ", "#   #", "# # #", "#  ##", " ####"],
+    'R': ["#### ", "#   #", "#### ", "#  # ", "#   #"],
+    'S': [" ####", "#    ", " ### ", "    #", "#### "],
+    'T': ["#####", "  #  ", "  #  ", "  #  ", "  #  "],
+    'U': ["#   #", "#   #", "#   #", "#   #", " ### "],
+    'V': ["#   #", "#   #", " # # ", " # # ", "  #  "],
+    'W': ["#   #", "#   #", "# # #", "## ##", "#   #"],
+    'X': ["#   #", " # # ", "  #  ", " # # ", "#   #"],
+    'Y': ["#   #", " # # ", "  #  ", "  #  ", "  #  "],
+    'Z': ["#####", "   # ", "  #  ", " #   ", "#####"],
+    ' ': ["     ", "     ", "     ", "     ", "     "],
+    '!': ["  #  ", "  #  ", "  #  ", "     ", "  #  "],
+    ',': ["     ", "     ", "     ", "  #  ", " #   "],
+}
+
+def render_block(text):
+    lines = [""] * 5
+    for ch in text.upper():
+        letter = BLOCK_LETTERS.get(ch, ["?????"] * 5)
+        for i in range(5):
+            lines[i] += letter[i] + " "
+    return "\n".join(lines)
 
 def greet(name="World", uppercase=False, greeting="Hello", quiet=False, reverse=False, separator=", ", shout=False):
     """
@@ -89,6 +129,11 @@ def main():
         help="Prepend the current date and time to the greeting.",
     )
     parser.add_argument(
+        "--figlet",
+        action="store_true",
+        help="Render the greeting in large ASCII block letters.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -98,6 +143,8 @@ def main():
     if args.timestamp:
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = f"[{ts}] {message}"
+    if args.figlet:
+        message = render_block(message)
     output = f"{COLORS[args.color]}{message}{RESET}" if args.color else message
     if args.border:
         border_line = "+" + "-" * (len(message) + 2) + "+"
