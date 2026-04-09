@@ -1,7 +1,21 @@
 import argparse
+import random
 from datetime import datetime
 
-VERSION = "1.0.12"
+VERSION = "1.0.14"
+
+LANG_GREETINGS = {
+    "en": "Hello",
+    "es": "Hola",
+    "fr": "Bonjour",
+    "de": "Hallo",
+    "it": "Ciao",
+    "pt": "Olá",
+    "ja": "Konnichiwa",
+    "zh": "Ni hao",
+    "ar": "Marhaba",
+    "ru": "Privet",
+}
 
 COLORS = {
     "red": "\033[31m",
@@ -129,9 +143,19 @@ def main():
         help="Prepend the current date and time to the greeting.",
     )
     parser.add_argument(
+        "--emoji",
+        action="store_true",
+        help="Prepend a random emoji to the greeting.",
+    )
+    parser.add_argument(
         "--figlet",
         action="store_true",
         help="Render the greeting in large ASCII block letters.",
+    )
+    parser.add_argument(
+        "--lang",
+        choices=list(LANG_GREETINGS.keys()),
+        help="Greet in a specific language (overrides --greeting).",
     )
     parser.add_argument(
         "--version",
@@ -139,10 +163,14 @@ def main():
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
-    message = greet(args.name, uppercase=args.uppercase, greeting=args.greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
+    greeting = LANG_GREETINGS[args.lang] if args.lang else args.greeting
+    message = greet(args.name, uppercase=args.uppercase, greeting=greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
     if args.timestamp:
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = f"[{ts}] {message}"
+    if args.emoji:
+        emojis = ["👋", "🎉", "🌟", "🚀", "✨", "😊", "🔥", "💡", "🎯", "🌈"]
+        message = f"{random.choice(emojis)} {message}"
     if args.figlet:
         message = render_block(message)
     output = f"{COLORS[args.color]}{message}{RESET}" if args.color else message
