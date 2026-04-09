@@ -2,7 +2,7 @@ import argparse
 import random
 from datetime import datetime
 
-VERSION = "1.0.14"
+VERSION = "1.0.15"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -153,6 +153,11 @@ def main():
         help="Render the greeting in large ASCII block letters.",
     )
     parser.add_argument(
+        "--rainbow",
+        action="store_true",
+        help="Print each character in a cycling rainbow color.",
+    )
+    parser.add_argument(
         "--lang",
         choices=list(LANG_GREETINGS.keys()),
         help="Greet in a specific language (overrides --greeting).",
@@ -173,7 +178,16 @@ def main():
         message = f"{random.choice(emojis)} {message}"
     if args.figlet:
         message = render_block(message)
-    output = f"{COLORS[args.color]}{message}{RESET}" if args.color else message
+    if args.rainbow:
+        rainbow_colors = list(COLORS.values())
+        colored_chars = []
+        for i, ch in enumerate(message):
+            colored_chars.append(f"{rainbow_colors[i % len(rainbow_colors)]}{ch}{RESET}")
+        output = "".join(colored_chars)
+    elif args.color:
+        output = f"{COLORS[args.color]}{message}{RESET}"
+    else:
+        output = message
     if args.border:
         border_line = "+" + "-" * (len(message) + 2) + "+"
         output = f"{border_line}\n| {output} |\n{border_line}"
