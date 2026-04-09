@@ -2,7 +2,7 @@ import argparse
 import random
 from datetime import datetime
 
-VERSION = "1.0.16"
+VERSION = "1.0.17"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -227,6 +227,11 @@ def main():
         help="Summon a tiny ASCII owl before the greeting.",
     )
     parser.add_argument(
+        "--sparkle",
+        action="store_true",
+        help="Wrap the greeting with sparkle decorations.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -248,6 +253,8 @@ def main():
         message = f"{random.choice(emojis)} {message}"
     if args.figlet:
         message = render_block(message)
+    if args.sparkle:
+        message = f".:*~*:._.:*~*:. {message} .:*~*:._.:*~*:."
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
