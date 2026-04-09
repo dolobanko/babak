@@ -2,7 +2,7 @@ import argparse
 import random
 from datetime import datetime
 
-VERSION = "1.0.18"
+VERSION = "1.0.19"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -251,6 +251,11 @@ def main():
         help="Display the greeting in a speech bubble with a stick figure.",
     )
     parser.add_argument(
+        "--underline",
+        action="store_true",
+        help="Print a dashed line under the greeting (width matches the longest line).",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -286,6 +291,9 @@ def main():
         output = f"{COLORS[args.color]}{message}{RESET}"
     else:
         output = message
+    if args.underline:
+        width = max(len(line) for line in message.split("\n"))
+        output = output + "\n" + ("-" * width)
     if args.border:
         border_line = "+" + "-" * (len(message) + 2) + "+"
         output = f"{border_line}\n| {output} |\n{border_line}"
