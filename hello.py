@@ -2,7 +2,7 @@ import argparse
 import random
 from datetime import datetime
 
-VERSION = "1.0.17"
+VERSION = "1.0.18"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -25,6 +25,12 @@ OWL_ASCII = r"""
    [O.o]
    /)__)
   -"--"-"""
+
+STICK_FIGURE = r"""
+    o
+   /|\
+   / \
+"""
 
 GLITCH_MAP = str.maketrans("aeiosltAEIOSLT", "43101574310157")
 
@@ -106,6 +112,14 @@ def glitch_text(text, intensity=0.35):
         else:
             out.append(ch)
     return "".join(out)
+
+
+def render_speech_bubble(text):
+    width = len(text) + 2
+    top = " " + "_" * width
+    bottom = " " + "-" * width
+    bubble = f"{top}\n< {text} >\n{bottom}"
+    return bubble + "\n" + STICK_FIGURE.strip("\n")
 
 
 def render_block(text):
@@ -232,6 +246,11 @@ def main():
         help="Wrap the greeting with sparkle decorations.",
     )
     parser.add_argument(
+        "--bubble",
+        action="store_true",
+        help="Display the greeting in a speech bubble with a stick figure.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -255,6 +274,8 @@ def main():
         message = render_block(message)
     if args.sparkle:
         message = f".:*~*:._.:*~*:. {message} .:*~*:._.:*~*:."
+    if args.bubble:
+        message = render_speech_bubble(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
