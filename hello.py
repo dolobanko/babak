@@ -2,7 +2,7 @@ import argparse
 import random
 from datetime import datetime
 
-VERSION = "1.0.15"
+VERSION = "1.0.16"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -15,7 +15,18 @@ LANG_GREETINGS = {
     "zh": "Ni hao",
     "ar": "Marhaba",
     "ru": "Privet",
+    "lol": "OH HAI",
+    "pirate": "Ahoy",
+    "binary": "01001000 01101001",
 }
+
+OWL_ASCII = r"""
+   ,___,
+   [O.o]
+   /)__)
+  -"--"-"""
+
+GLITCH_MAP = str.maketrans("aeiosltAEIOSLT", "43101574310157")
 
 COLORS = {
     "red": "\033[31m",
@@ -58,6 +69,44 @@ BLOCK_LETTERS = {
     '!': ["  #  ", "  #  ", "  #  ", "     ", "  #  "],
     ',': ["     ", "     ", "     ", "  #  ", " #   "],
 }
+
+def apply_chaos(args):
+    """Roll the dice on flags so no two runs feel the same."""
+    r = random.random
+    if r() < 0.55:
+        args.emoji = True
+    if r() < 0.4:
+        args.timestamp = True
+    if r() < 0.35:
+        args.reverse = True
+    if r() < 0.3:
+        args.shout = True
+    if r() < 0.45:
+        args.border = True
+    if r() < 0.25:
+        args.quiet = True
+    if r() < 0.2:
+        args.uppercase = True
+    if r() < 0.15:
+        args.figlet = True
+    if r() < 0.5:
+        args.rainbow = True
+        args.color = None
+    elif r() < 0.35:
+        args.color = random.choice(list(COLORS.keys()))
+        args.rainbow = False
+
+
+def glitch_text(text, intensity=0.35):
+    """Leet-speak a random subset of eligible letters."""
+    out = []
+    for ch in text:
+        if ch in GLITCH_MAP and random.random() < intensity:
+            out.append(ch.translate(GLITCH_MAP))
+        else:
+            out.append(ch)
+    return "".join(out)
+
 
 def render_block(text):
     lines = [""] * 5
@@ -163,16 +212,37 @@ def main():
         help="Greet in a specific language (overrides --greeting).",
     )
     parser.add_argument(
+        "--chaos",
+        action="store_true",
+        help="Randomize emoji, colors, borders, and other flair each run.",
+    )
+    parser.add_argument(
+        "--glitch",
+        action="store_true",
+        help="Corrupt some letters into l33t speak (stochastic).",
+    )
+    parser.add_argument(
+        "--owl",
+        action="store_true",
+        help="Summon a tiny ASCII owl before the greeting.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
     )
     args = parser.parse_args()
+    if args.chaos:
+        apply_chaos(args)
     greeting = LANG_GREETINGS[args.lang] if args.lang else args.greeting
     message = greet(args.name, uppercase=args.uppercase, greeting=greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
+    if args.glitch:
+        message = glitch_text(message)
     if args.timestamp:
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = f"[{ts}] {message}"
+    if args.owl:
+        message = OWL_ASCII.strip("\n") + "\n" + message
     if args.emoji:
         emojis = ["👋", "🎉", "🌟", "🚀", "✨", "😊", "🔥", "💡", "🎯", "🌈"]
         message = f"{random.choice(emojis)} {message}"
