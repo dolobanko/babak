@@ -1,8 +1,9 @@
 import argparse
+import math
 import random
 from datetime import datetime
 
-VERSION = "1.0.19"
+VERSION = "1.0.20"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -112,6 +113,19 @@ def glitch_text(text, intensity=0.35):
         else:
             out.append(ch)
     return "".join(out)
+
+
+def render_wave(text, amplitude=2, wavelength=6):
+    """Lay out text along a sine wave so characters ride up and down."""
+    if not text:
+        return text
+    height = amplitude * 2 + 1
+    grid = [[" "] * len(text) for _ in range(height)]
+    for i, ch in enumerate(text):
+        offset = round(amplitude * math.sin(2 * math.pi * i / wavelength))
+        row = amplitude - offset
+        grid[row][i] = ch
+    return "\n".join("".join(row).rstrip() for row in grid)
 
 
 def render_speech_bubble(text):
@@ -251,6 +265,11 @@ def main():
         help="Display the greeting in a speech bubble with a stick figure.",
     )
     parser.add_argument(
+        "--wave",
+        action="store_true",
+        help="Arrange characters along a sine wave.",
+    )
+    parser.add_argument(
         "--underline",
         action="store_true",
         help="Print a dashed line under the greeting (width matches the longest line).",
@@ -281,6 +300,8 @@ def main():
         message = f".:*~*:._.:*~*:. {message} .:*~*:._.:*~*:."
     if args.bubble:
         message = render_speech_bubble(message)
+    if args.wave:
+        message = render_wave(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
