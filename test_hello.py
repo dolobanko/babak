@@ -3,7 +3,7 @@ from hello import greet, VERSION
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.19")
+        self.assertEqual(VERSION, "1.0.22")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
