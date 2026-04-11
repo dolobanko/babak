@@ -3,7 +3,7 @@ import math
 import random
 from datetime import datetime
 
-VERSION = "1.0.22"
+VERSION = "1.0.23"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -118,6 +118,20 @@ def glitch_text(text, intensity=0.35):
             out.append(ch.translate(GLITCH_MAP))
         else:
             out.append(ch)
+    return "".join(out)
+
+
+ZALGO_MARKS = [chr(c) for c in range(0x0300, 0x036F)]
+
+
+def zalgo_text(text, intensity=3):
+    """Summon the cursed combining marks."""
+    out = []
+    for ch in text:
+        out.append(ch)
+        if ch.strip():
+            for _ in range(random.randint(0, intensity)):
+                out.append(random.choice(ZALGO_MARKS))
     return "".join(out)
 
 
@@ -271,6 +285,11 @@ def main():
         help="Display the greeting in a speech bubble with a stick figure.",
     )
     parser.add_argument(
+        "--zalgo",
+        action="store_true",
+        help="Summon cursed combining marks over the greeting.",
+    )
+    parser.add_argument(
         "--wave",
         action="store_true",
         help="Arrange characters along a sine wave.",
@@ -292,6 +311,8 @@ def main():
     message = greet(args.name, uppercase=args.uppercase, greeting=greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
     if args.glitch:
         message = glitch_text(message)
+    if args.zalgo:
+        message = zalgo_text(message)
     if args.timestamp:
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         message = f"[{ts}] {message}"
