@@ -3,7 +3,7 @@ import math
 import random
 from datetime import datetime
 
-VERSION = "1.0.20"
+VERSION = "1.0.21"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -19,6 +19,11 @@ LANG_GREETINGS = {
     "lol": "OH HAI",
     "pirate": "Ahoy",
     "binary": "01001000 01101001",
+    "ko": "Annyeong",
+    "hi": "Namaste",
+    "sv": "Hej",
+    "tr": "Merhaba",
+    "elvish": "Mae govannen",
 }
 
 OWL_ASCII = r"""
