@@ -1,9 +1,11 @@
 import argparse
 import math
 import random
+import sys
+import time
 from datetime import datetime
 
-VERSION = "1.0.23"
+VERSION = "1.0.25"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -133,6 +135,225 @@ def zalgo_text(text, intensity=3):
             for _ in range(random.randint(0, intensity)):
                 out.append(random.choice(ZALGO_MARKS))
     return "".join(out)
+
+
+def render_matrix(text, duration=2.0):
+    """Matrix-style rain that resolves into the greeting."""
+    GREEN = "\033[32m"
+    BRIGHT_GREEN = "\033[92m"
+    DIM_GREEN = "\033[2;32m"
+    RESET_ALL = "\033[0m"
+    HIDE_CURSOR = "\033[?25l"
+    SHOW_CURSOR = "\033[?25h"
+    CLEAR_SCREEN = "\033[2J\033[H"
+
+    width = max(len(line) for line in text.split("\n")) if "\n" in text else len(text)
+    height = 20
+    target_row = height // 2
+    columns = list(range(width))
+    random.shuffle(columns)
+
+    # Each column has a rain drop falling; once it reaches target_row, it locks
+    glyphs = "abcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>{}[]!?/\\|~^"
+    drops = {}  # col -> current row
+    locked = {}  # col -> True once the char is revealed
+    trail_len = 5
+
+    for col in columns:
+        drops[col] = random.randint(-height, -1)
+
+    sys.stdout.write(HIDE_CURSOR)
+    sys.stdout.flush()
+
+    fps = 30
+    frames = int(duration * fps)
+    try:
+        for frame in range(frames):
+            grid = [[" "] * width for _ in range(height)]
+
+            for col in range(width):
+                if col in locked:
+                    if col < len(text):
+                        grid[target_row][col] = text[col]
+                    continue
+
+                if col not in drops:
+                    continue
+
+                drop_row = drops[col]
+                # Advance the drop
+                drops[col] += 1
+
+                if drops[col] >= target_row:
+                    locked[col] = True
+                    if col < len(text):
+                        grid[target_row][col] = text[col]
+                    continue
+
+                # Draw the trail
+                for t in range(trail_len + 1):
+                    r = drop_row - t
+                    if 0 <= r < height:
+                        grid[r][col] = random.choice(glyphs)
+
+            # Render
+            buf = [CLEAR_SCREEN]
+            for r in range(height):
+                for c in range(width):
+                    ch = grid[r][c]
+                    if r == target_row and c in locked:
+                        buf.append(f"{BRIGHT_GREEN}{ch}{RESET_ALL}")
+                    elif ch != " ":
+                        # Head of drop is bright, trail is dim
+                        if c in drops and r == drops[c]:
+                            buf.append(f"{BRIGHT_GREEN}{ch}{RESET_ALL}")
+                        else:
+                            buf.append(f"{DIM_GREEN}{ch}{RESET_ALL}")
+                    else:
+                        buf.append(" ")
+                buf.append("\n")
+            sys.stdout.write("".join(buf))
+            sys.stdout.flush()
+            time.sleep(1.0 / fps)
+
+        # Final frame: show just the text clean
+        sys.stdout.write(CLEAR_SCREEN)
+        # Center the text vertically
+        for _ in range(target_row):
+            sys.stdout.write("\n")
+        sys.stdout.write(f"{BRIGHT_GREEN}{text}{RESET_ALL}\n")
+        sys.stdout.flush()
+        time.sleep(0.5)
+    finally:
+        sys.stdout.write(SHOW_CURSOR)
+        sys.stdout.flush()
+
+
+def render_fire(text, duration=3.0):
+    """Animated fire effect — text burns with rising flames."""
+    HIDE_CURSOR = "\033[?25l"
+    SHOW_CURSOR = "\033[?25h"
+    CLEAR_SCREEN = "\033[2J\033[H"
+    RESET_ALL = "\033[0m"
+
+    # Fire palette: black -> red -> orange -> yellow -> bright yellow -> white
+    FIRE_COLORS = [
+        "\033[30m",       # black (empty)
+        "\033[2;31m",     # dim red
+        "\033[31m",       # red
+        "\033[91m",       # bright red
+        "\033[33m",       # orange/yellow
+        "\033[93m",       # bright yellow
+        "\033[97m",       # white hot
+    ]
+    FIRE_CHARS = [" ", ".", ":", "*", "#", "%", "@", "&", "█", "▓", "▒", "░"]
+    EMBER_CHARS = [".", "'", "`", "*", "^", "~"]
+
+    width = len(text) + 4
+    flame_height = 10
+    text_row = flame_height + 1
+    total_height = text_row + 3
+    # Heat source: each column under a non-space char is hot
+    heat_src = [1 if i - 2 < len(text) and i - 2 >= 0 and text[i - 2] != " " else 0 for i in range(width)]
+
+    # Heat grid: [row][col] float 0..1
+    heat = [[0.0] * width for _ in range(total_height)]
+
+    sys.stdout.write(HIDE_CURSOR)
+    sys.stdout.flush()
+
+    fps = 20
+    frames = int(duration * fps)
+    try:
+        for frame in range(frames):
+            # Set heat sources at text row
+            for c in range(width):
+                if heat_src[c]:
+                    heat[text_row][c] = min(1.0, 0.7 + random.random() * 0.3)
+                    if text_row + 1 < total_height:
+                        heat[text_row + 1][c] = min(1.0, 0.4 + random.random() * 0.3)
+
+            # Propagate heat upward with cooling and spread
+            new_heat = [[0.0] * width for _ in range(total_height)]
+            for r in range(total_height):
+                for c in range(width):
+                    if r >= text_row:
+                        new_heat[r][c] = heat[r][c]
+                        continue
+                    # Average from below + neighbors, with cooling
+                    samples = []
+                    for dr in [1, 2]:
+                        if r + dr < total_height:
+                            samples.append(heat[r + dr][c])
+                    for dc in [-1, 1]:
+                        if 0 <= c + dc < width and r + 1 < total_height:
+                            samples.append(heat[r + 1][c + dc] * 0.5)
+                    if samples:
+                        avg = sum(samples) / len(samples)
+                    else:
+                        avg = 0
+                    cooling = 0.06 + random.random() * 0.08
+                    flicker = (random.random() - 0.5) * 0.1
+                    new_heat[r][c] = max(0, min(1, avg - cooling + flicker))
+            heat = new_heat
+
+            # Render
+            buf = [CLEAR_SCREEN]
+            # Flame rows
+            for r in range(flame_height):
+                for c in range(width):
+                    h = heat[r][c]
+                    if h < 0.05:
+                        buf.append(" ")
+                    else:
+                        ci = min(len(FIRE_COLORS) - 1, int(h * len(FIRE_COLORS)))
+                        if h > 0.6:
+                            ch = random.choice(FIRE_CHARS[6:])
+                        elif h > 0.3:
+                            ch = random.choice(FIRE_CHARS[3:7])
+                        else:
+                            ch = random.choice(FIRE_CHARS[:4])
+                        buf.append(f"{FIRE_COLORS[ci]}{ch}{RESET_ALL}")
+                buf.append("\n")
+
+            # Ember row (sparks flying up)
+            for c in range(width):
+                if heat_src[c] and random.random() < 0.15:
+                    buf.append(f"\033[93m{random.choice(EMBER_CHARS)}{RESET_ALL}")
+                else:
+                    buf.append(" ")
+            buf.append("\n")
+
+            # Text row — white hot
+            buf.append("  ")
+            for ch in text:
+                glow = random.choice(["\033[97m", "\033[93m", "\033[91m"])
+                buf.append(f"{glow}{ch}{RESET_ALL}")
+            buf.append("\n")
+
+            # Ash/coal row below text
+            buf.append("  ")
+            for i in range(len(text)):
+                if random.random() < 0.7:
+                    buf.append(f"\033[2;31m{random.choice(['_', '.', ','])}{RESET_ALL}")
+                else:
+                    buf.append(" ")
+            buf.append("\n")
+
+            sys.stdout.write("".join(buf))
+            sys.stdout.flush()
+            time.sleep(1.0 / fps)
+
+        # Final clean frame
+        sys.stdout.write(CLEAR_SCREEN)
+        for _ in range(flame_height // 2):
+            sys.stdout.write("\n")
+        sys.stdout.write(f"  \033[93m🔥 {text} 🔥{RESET_ALL}\n")
+        sys.stdout.flush()
+        time.sleep(0.5)
+    finally:
+        sys.stdout.write(SHOW_CURSOR)
+        sys.stdout.flush()
 
 
 def render_wave(text, amplitude=2, wavelength=6):
@@ -295,6 +516,16 @@ def main():
         help="Arrange characters along a sine wave.",
     )
     parser.add_argument(
+        "--matrix",
+        action="store_true",
+        help="Matrix-style rain animation that resolves into the greeting.",
+    )
+    parser.add_argument(
+        "--fire",
+        action="store_true",
+        help="Animated fire effect — text burns with rising flames.",
+    )
+    parser.add_argument(
         "--underline",
         action="store_true",
         help="Print a dashed line under the greeting (width matches the longest line).",
@@ -327,6 +558,12 @@ def main():
         message = f".:*~*:._.:*~*:. {message} .:*~*:._.:*~*:."
     if args.bubble:
         message = render_speech_bubble(message)
+    if args.matrix:
+        render_matrix(message)
+        return
+    if args.fire:
+        render_fire(message)
+        return
     if args.wave:
         message = render_wave(message)
     if args.rainbow:
