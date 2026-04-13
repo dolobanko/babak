@@ -1,9 +1,10 @@
 import unittest
-from hello import greet, VERSION
+
+from hello import VERSION, greet, wrap_with_border
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.22")
+        self.assertEqual(VERSION, "1.0.26")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -25,6 +26,18 @@ class TestHello(unittest.TestCase):
 
     def test_greet_blank_greeting_falls_back_to_hello(self):
         self.assertEqual(greet("Alice", greeting="   "), "Hello, Alice!")
+
+    def test_wrap_with_border_single_line(self):
+        self.assertEqual(
+            wrap_with_border("Hello, World!"),
+            "+---------------+\n| Hello, World! |\n+---------------+",
+        )
+
+    def test_wrap_with_border_multiline_pads_shorter_lines(self):
+        self.assertEqual(
+            wrap_with_border("Hi\nHello"),
+            "+-------+\n| Hi    |\n| Hello |\n+-------+",
+        )
 
 if __name__ == "__main__":
     unittest.main()

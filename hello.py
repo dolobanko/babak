@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.25"
+VERSION = "1.0.26"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -385,6 +385,15 @@ def render_block(text):
             lines[i] += letter[i] + " "
     return "\n".join(lines)
 
+
+def wrap_with_border(text):
+    """Wrap single-line or multi-line text in an ASCII border."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    border_line = "+" + "-" * (width + 2) + "+"
+    body = "\n".join(f"| {line.ljust(width)} |" for line in lines)
+    return f"{border_line}\n{body}\n{border_line}"
+
 def greet(name="World", uppercase=False, greeting="Hello", quiet=False, reverse=False, separator=", ", shout=False):
     """
     Generates a greeting message.
@@ -580,8 +589,7 @@ def main():
         width = max(len(line) for line in message.split("\n"))
         output = output + "\n" + ("-" * width)
     if args.border:
-        border_line = "+" + "-" * (len(message) + 2) + "+"
-        output = f"{border_line}\n| {output} |\n{border_line}"
+        output = wrap_with_border(output)
     for _ in range(args.repeat):
         print(output)
     if args.count:

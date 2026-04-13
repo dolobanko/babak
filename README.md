@@ -1,12 +1,12 @@
 # Babak Project
 
-Last updated: Wed Apr 8 2026
+Last updated: Mon Apr 13 2026
 
 Testing branch policies for origin.
 
 ## Scripts
 
-- `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, a custom `--greeting`, `--color` output, `--timestamp` to prepend the current time, and a `--version` flag
+- `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, a custom `--greeting`, `--color` output, `--timestamp` to prepend the current time, `--border` support for both single-line and multi-line output, and a `--version` flag
 - `hello_world.py` — simple Hello World entry point
 - `test_hello.py` — unit tests for the greeter
 
