@@ -4,6 +4,7 @@ from hello import (
     VERSION,
     render_alternating,
     render_arcade,
+    render_plaque,
     render_ribbon,
     render_titlecase,
     render_ticket,
@@ -22,7 +23,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.37")
+        self.assertEqual(VERSION, "1.0.38")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -119,6 +120,12 @@ class TestHello(unittest.TestCase):
 
     def test_render_titlecase_capitalizes_words_per_line(self):
         self.assertEqual(render_titlecase("hello world\nfrom babak"), "Hello World\nFrom Babak")
+
+    def test_render_plaque_displays_message_with_footer(self):
+        self.assertEqual(
+            render_plaque("Hi"),
+            ".=============.\n|      Hi     |\n|  BABAK CLI  |\n'============='",
+        )
 
 if __name__ == "__main__":
     unittest.main()

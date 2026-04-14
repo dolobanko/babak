@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.37"
+VERSION = "1.0.38"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -531,6 +531,18 @@ def render_ribbon(text):
     return "\n".join([top, *body, bottom, tails])
 
 
+def render_plaque(text):
+    """Display the greeting like a small engraved plaque."""
+    lines = text.split("\n")
+    footer = "BABAK CLI"
+    width = max(len(line) for line in [*lines, footer])
+    top = "." + "=" * (width + 4) + "."
+    bottom = "'" + "=" * (width + 4) + "'"
+    body = [f"|  {line.center(width)}  |" for line in lines]
+    body.append(f"|  {footer.rjust(width)}  |")
+    return "\n".join([top, *body, bottom])
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -755,6 +767,11 @@ def main():
         help="Capitalize each word in the greeting.",
     )
     parser.add_argument(
+        "--plaque",
+        action="store_true",
+        help="Display the greeting like a small engraved plaque.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -818,6 +835,8 @@ def main():
         message = render_ribbon(message)
     if args.titlecase:
         message = render_titlecase(message)
+    if args.plaque:
+        message = render_plaque(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
