@@ -5,6 +5,7 @@ from hello import (
     render_alternating,
     render_arcade,
     render_chevron,
+    render_hologram,
     render_plaque,
     render_receipt,
     render_ribbon,
@@ -26,7 +27,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.39")
+        self.assertEqual(VERSION, "1.0.40")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -140,6 +141,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_receipt("Hi"),
             "+-----------------+\n|  BABAK RECEIPT  |\n|-----------------|\n|  Hi             |\n|-----------------|\n|    THANK YOU    |\n+-----------------+",
+        )
+
+    def test_render_hologram_displays_scifi_panel(self):
+        self.assertEqual(
+            render_hologram("Hi"),
+            ".====================.\n|  HOLOGRAM: ONLINE  |\n|  ~~~~~~~~~~~~~~~~  |\n|  > Hi              |\n|  ~~~~~~~~~~~~~~~~  |\n|   SIGNAL: LOCKED   |\n'===================='",
         )
 
 if __name__ == "__main__":

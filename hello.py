@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.39"
+VERSION = "1.0.40"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -580,6 +580,31 @@ def render_receipt(text):
     return "\n".join(body)
 
 
+def render_hologram(text):
+    """Display the greeting like a sci-fi terminal panel."""
+    lines = [f"> {line}" for line in text.split("\n")]
+    header = "HOLOGRAM: ONLINE"
+    footer = "SIGNAL: LOCKED"
+    width = max(len(line) for line in [*lines, header, footer])
+    border = "." + "=" * (width + 4) + "."
+    bottom = "'" + "=" * (width + 4) + "'"
+    scanline = f"|  {'~' * width}  |"
+    body = [
+        border,
+        f"|  {header.center(width)}  |",
+        scanline,
+    ]
+    body.extend(f"|  {line.ljust(width)}  |" for line in lines)
+    body.extend(
+        [
+            scanline,
+            f"|  {footer.center(width)}  |",
+            bottom,
+        ]
+    )
+    return "\n".join(body)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -824,6 +849,11 @@ def main():
         help="Display the greeting like a tiny printed receipt.",
     )
     parser.add_argument(
+        "--hologram",
+        action="store_true",
+        help="Display the greeting like a sci-fi terminal panel.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -895,6 +925,8 @@ def main():
         message = render_chevron(message)
     if args.receipt:
         message = render_receipt(message)
+    if args.hologram:
+        message = render_hologram(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
