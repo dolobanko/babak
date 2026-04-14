@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.31"
+VERSION = "1.0.32"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -443,6 +443,16 @@ def render_postcard(text):
     return "\n".join(body)
 
 
+def render_quote(text):
+    """Prefix each line like a blockquote while preserving blank lines."""
+    return "\n".join("> " if not line else f"> {line}" for line in text.split("\n"))
+
+
+def render_double_border(text):
+    """Wrap the text in two nested ASCII borders."""
+    return wrap_with_border(wrap_with_border(text))
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -632,6 +642,16 @@ def main():
         help="Display the greeting as a tiny ASCII postcard.",
     )
     parser.add_argument(
+        "--quote",
+        action="store_true",
+        help="Prefix each line with a blockquote marker.",
+    )
+    parser.add_argument(
+        "--double-border",
+        action="store_true",
+        help="Wrap the greeting in two nested ASCII borders.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -681,6 +701,10 @@ def main():
         message = render_boxed_shadow(message)
     if args.postcard:
         message = render_postcard(message)
+    if args.quote:
+        message = render_quote(message)
+    if args.double_border:
+        message = render_double_border(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

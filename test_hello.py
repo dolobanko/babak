@@ -1,10 +1,23 @@
 import unittest
 
-from hello import VERSION, greet, render_boxed_shadow, render_flipcase, render_mirror, render_postcard, render_shadow, render_spaced, render_stairs, wrap_with_border
+from hello import (
+    VERSION,
+    greet,
+    render_boxed_shadow,
+    render_double_border,
+    render_flipcase,
+    render_mirror,
+    render_postcard,
+    render_quote,
+    render_shadow,
+    render_spaced,
+    render_stairs,
+    wrap_with_border,
+)
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.31")
+        self.assertEqual(VERSION, "1.0.32")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -64,6 +77,18 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_postcard("Hi"),
             "+========================+\n|  Greetings From Babak  |\n|                        |\n|           Hi           |\n|                        |\n|  Wish you were here.   |\n+========================+",
+        )
+
+    def test_render_quote_prefixes_each_line(self):
+        self.assertEqual(render_quote("Hi\nThere"), "> Hi\n> There")
+
+    def test_render_quote_preserves_blank_lines(self):
+        self.assertEqual(render_quote("Hi\n\nThere"), "> Hi\n> \n> There")
+
+    def test_render_double_border_nests_ascii_frames(self):
+        self.assertEqual(
+            render_double_border("Hi"),
+            "+--------+\n| +----+ |\n| | Hi | |\n| +----+ |\n+--------+",
         )
 
 if __name__ == "__main__":
