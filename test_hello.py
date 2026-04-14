@@ -2,6 +2,7 @@ import unittest
 
 from hello import (
     VERSION,
+    render_alternating,
     render_arcade,
     greet,
     render_boxed_shadow,
@@ -18,7 +19,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.33")
+        self.assertEqual(VERSION, "1.0.34")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -97,6 +98,9 @@ class TestHello(unittest.TestCase):
             render_arcade("Hi"),
             ".=============================.\n|         BABAK ARCADE        |\n|                             |\n|              Hi             |\n|                             |\n|  CREDITS: 01   PRESS START  |\n'============================='",
         )
+
+    def test_render_alternating_toggles_case_for_letters_only(self):
+        self.assertEqual(render_alternating("Hello, World! 123"), "HeLlO, wOrLd! 123")
 
 if __name__ == "__main__":
     unittest.main()

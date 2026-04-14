@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.33"
+VERSION = "1.0.34"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -477,6 +477,19 @@ def render_arcade(text):
     return "\n".join(body)
 
 
+def render_alternating(text):
+    """Alternate character case across letters for a playful effect."""
+    out = []
+    upper = True
+    for ch in text:
+        if ch.isalpha():
+            out.append(ch.upper() if upper else ch.lower())
+            upper = not upper
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -681,6 +694,11 @@ def main():
         help="Display the greeting like a retro arcade attract screen.",
     )
     parser.add_argument(
+        "--alternating",
+        action="store_true",
+        help="Alternate character case across letters.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -736,6 +754,8 @@ def main():
         message = render_double_border(message)
     if args.arcade:
         message = render_arcade(message)
+    if args.alternating:
+        message = render_alternating(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
