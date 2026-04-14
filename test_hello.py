@@ -1,10 +1,10 @@
 import unittest
 
-from hello import VERSION, greet, render_mirror, render_spaced, render_stairs, wrap_with_border
+from hello import VERSION, greet, render_mirror, render_shadow, render_spaced, render_stairs, wrap_with_border
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.28")
+        self.assertEqual(VERSION, "1.0.29")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -47,6 +47,9 @@ class TestHello(unittest.TestCase):
 
     def test_render_spaced_preserves_lines(self):
         self.assertEqual(render_spaced("Hi\nYo"), "H i\nY o")
+
+    def test_render_shadow_offsets_multiline_copy(self):
+        self.assertEqual(render_shadow("Hi\nYo"), "Hi\nYo\n Hi\n Yo")
 
 if __name__ == "__main__":
     unittest.main()

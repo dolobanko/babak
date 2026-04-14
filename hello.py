@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.28"
+VERSION = "1.0.29"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -401,6 +401,13 @@ def render_spaced(text):
     return "\n".join(" ".join(line) for line in text.split("\n"))
 
 
+def render_shadow(text):
+    """Print the text followed by a one-space-offset shadow copy."""
+    lines = text.split("\n")
+    shadow = "\n".join(f" {line}" for line in lines)
+    return f"{text}\n{shadow}"
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -570,6 +577,11 @@ def main():
         help="Insert spaces between characters for a stretched-out look.",
     )
     parser.add_argument(
+        "--shadow",
+        action="store_true",
+        help="Print the greeting with a one-space-offset shadow underneath.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -611,6 +623,8 @@ def main():
         message = render_mirror(message)
     if args.spaced:
         message = render_spaced(message)
+    if args.shadow:
+        message = render_shadow(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
