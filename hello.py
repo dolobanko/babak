@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.41"
+VERSION = "1.0.43"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -628,6 +628,28 @@ def render_cinema(text):
     return "\n".join(body)
 
 
+def render_bracket(text):
+    """Wrap each line in square brackets."""
+    return "\n".join(f"[ {line} ]" for line in text.split("\n"))
+
+
+def typewriter_print(text, speed=0.04):
+    """Print text one character at a time with a typewriter effect."""
+    for ch in text:
+        sys.stdout.write(ch)
+        sys.stdout.flush()
+        if ch == "\n":
+            time.sleep(speed * 3)
+        elif ch in ".!?":
+            time.sleep(speed * 5)
+        elif ch == ",":
+            time.sleep(speed * 3)
+        else:
+            time.sleep(speed)
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -882,6 +904,16 @@ def main():
         help="Display the greeting like a cinema marquee.",
     )
     parser.add_argument(
+        "--bracket",
+        action="store_true",
+        help="Wrap each line of the greeting in square brackets.",
+    )
+    parser.add_argument(
+        "--typewriter",
+        action="store_true",
+        help="Print the greeting one character at a time with a typewriter effect.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -957,6 +989,8 @@ def main():
         message = render_hologram(message)
     if args.cinema:
         message = render_cinema(message)
+    if args.bracket:
+        message = render_bracket(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
@@ -973,7 +1007,10 @@ def main():
     if args.border:
         output = wrap_with_border(output)
     for _ in range(args.repeat):
-        print(output)
+        if args.typewriter:
+            typewriter_print(output)
+        else:
+            print(output)
     if args.count:
         print(f"({len(message)} characters)")
 
