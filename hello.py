@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.30"
+VERSION = "1.0.31"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -420,6 +420,29 @@ def render_boxed_shadow(text):
     return f"{bordered}\n{shadow}"
 
 
+def render_postcard(text):
+    """Lay out the greeting like a small ASCII postcard."""
+    lines = text.split("\n")
+    title = "Greetings From Babak"
+    footer = "Wish you were here."
+    width = max(len(line) for line in [*lines, title, footer])
+    border = "+" + "=" * (width + 4) + "+"
+    body = [
+        border,
+        f"|  {title.center(width)}  |",
+        f"|  {' ' * width}  |",
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            f"|  {' ' * width}  |",
+            f"|  {footer.center(width)}  |",
+            border,
+        ]
+    )
+    return "\n".join(body)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -604,6 +627,11 @@ def main():
         help="Wrap the greeting in a border and print a shadow copy underneath.",
     )
     parser.add_argument(
+        "--postcard",
+        action="store_true",
+        help="Display the greeting as a tiny ASCII postcard.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -651,6 +679,8 @@ def main():
         message = render_flipcase(message)
     if args.boxed_shadow:
         message = render_boxed_shadow(message)
+    if args.postcard:
+        message = render_postcard(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

@@ -1,10 +1,10 @@
 import unittest
 
-from hello import VERSION, greet, render_boxed_shadow, render_flipcase, render_mirror, render_shadow, render_spaced, render_stairs, wrap_with_border
+from hello import VERSION, greet, render_boxed_shadow, render_flipcase, render_mirror, render_postcard, render_shadow, render_spaced, render_stairs, wrap_with_border
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.30")
+        self.assertEqual(VERSION, "1.0.31")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -58,6 +58,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_boxed_shadow("Hi"),
             "+----+\n| Hi |\n+----+\n +----+\n | Hi |\n +----+",
+        )
+
+    def test_render_postcard_centers_message_with_header_and_footer(self):
+        self.assertEqual(
+            render_postcard("Hi"),
+            "+========================+\n|  Greetings From Babak  |\n|                        |\n|           Hi           |\n|                        |\n|  Wish you were here.   |\n+========================+",
         )
 
 if __name__ == "__main__":
