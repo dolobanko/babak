@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.40"
+VERSION = "1.0.41"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -605,6 +605,29 @@ def render_hologram(text):
     return "\n".join(body)
 
 
+def render_cinema(text):
+    """Display the greeting like a small cinema marquee."""
+    lines = text.split("\n")
+    header = "NOW SHOWING"
+    footer = "BABAK CINEMA"
+    width = max(len(line) for line in [*lines, header, footer])
+    border = "*" + "=" * (width + 4) + "*"
+    body = [
+        border,
+        f"|  {header.center(width)}  |",
+        f"|  {' ' * width}  |",
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            f"|  {' ' * width}  |",
+            f"|  {footer.center(width)}  |",
+            border,
+        ]
+    )
+    return "\n".join(body)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -854,6 +877,11 @@ def main():
         help="Display the greeting like a sci-fi terminal panel.",
     )
     parser.add_argument(
+        "--cinema",
+        action="store_true",
+        help="Display the greeting like a cinema marquee.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -927,6 +955,8 @@ def main():
         message = render_receipt(message)
     if args.hologram:
         message = render_hologram(message)
+    if args.cinema:
+        message = render_cinema(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
