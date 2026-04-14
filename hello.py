@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.34"
+VERSION = "1.0.35"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -477,6 +477,31 @@ def render_arcade(text):
     return "\n".join(body)
 
 
+def render_ticket(text):
+    """Display the greeting like a small event ticket stub."""
+    lines = text.split("\n")
+    title = "ADMIT ONE"
+    footer = "BABAK EXPRESS"
+    width = max(len(line) for line in [*lines, title, footer])
+    top = "." + "-" * (width + 4) + "."
+    divider = "|" + "-" * (width + 4) + "|"
+    bottom = "'" + "-" * (width + 4) + "'"
+    body = [
+        top,
+        f"|  {title.center(width)}  |",
+        divider,
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            divider,
+            f"|  {footer.center(width)}  |",
+            bottom,
+        ]
+    )
+    return "\n".join(body)
+
+
 def render_alternating(text):
     """Alternate character case across letters for a playful effect."""
     out = []
@@ -694,6 +719,11 @@ def main():
         help="Display the greeting like a retro arcade attract screen.",
     )
     parser.add_argument(
+        "--ticket",
+        action="store_true",
+        help="Display the greeting like a ticket stub.",
+    )
+    parser.add_argument(
         "--alternating",
         action="store_true",
         help="Alternate character case across letters.",
@@ -754,6 +784,8 @@ def main():
         message = render_double_border(message)
     if args.arcade:
         message = render_arcade(message)
+    if args.ticket:
+        message = render_ticket(message)
     if args.alternating:
         message = render_alternating(message)
     if args.rainbow:

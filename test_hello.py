@@ -4,6 +4,7 @@ from hello import (
     VERSION,
     render_alternating,
     render_arcade,
+    render_ticket,
     greet,
     render_boxed_shadow,
     render_double_border,
@@ -19,7 +20,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.34")
+        self.assertEqual(VERSION, "1.0.35")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -97,6 +98,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_arcade("Hi"),
             ".=============================.\n|         BABAK ARCADE        |\n|                             |\n|              Hi             |\n|                             |\n|  CREDITS: 01   PRESS START  |\n'============================='",
+        )
+
+    def test_render_ticket_wraps_message_in_ticket_stub(self):
+        self.assertEqual(
+            render_ticket("Hi"),
+            ".-----------------.\n|    ADMIT ONE    |\n|-----------------|\n|        Hi       |\n|-----------------|\n|  BABAK EXPRESS  |\n'-----------------'",
         )
 
     def test_render_alternating_toggles_case_for_letters_only(self):
