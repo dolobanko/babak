@@ -6,6 +6,7 @@ from hello import (
     render_arcade,
     render_plaque,
     render_ribbon,
+    render_snakecase,
     render_titlecase,
     render_ticket,
     greet,
@@ -23,7 +24,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.38")
+        self.assertEqual(VERSION, "1.0.39")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -126,6 +127,9 @@ class TestHello(unittest.TestCase):
             render_plaque("Hi"),
             ".=============.\n|      Hi     |\n|  BABAK CLI  |\n'============='",
         )
+
+    def test_render_snakecase_normalizes_words_and_hyphens(self):
+        self.assertEqual(render_snakecase("Hello-There Babak"), "hello_there_babak")
 
 if __name__ == "__main__":
     unittest.main()

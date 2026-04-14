@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.38"
+VERSION = "1.0.39"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -543,6 +543,12 @@ def render_plaque(text):
     return "\n".join([top, *body, bottom])
 
 
+def render_snakecase(text):
+    """Convert words to snake_case while preserving line breaks."""
+    normalized = text.replace("-", " ")
+    return "\n".join("_".join(line.lower().split()) for line in normalized.split("\n"))
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -772,6 +778,11 @@ def main():
         help="Display the greeting like a small engraved plaque.",
     )
     parser.add_argument(
+        "--snakecase",
+        action="store_true",
+        help="Convert the greeting text to snake_case.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -837,6 +848,8 @@ def main():
         message = render_titlecase(message)
     if args.plaque:
         message = render_plaque(message)
+    if args.snakecase:
+        message = render_snakecase(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
