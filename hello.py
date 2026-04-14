@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.26"
+VERSION = "1.0.27"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -386,6 +386,11 @@ def render_block(text):
     return "\n".join(lines)
 
 
+def render_stairs(text):
+    """Render characters diagonally so the text descends like stairs."""
+    return "\n".join((" " * i) + ch for i, ch in enumerate(text))
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -540,6 +545,11 @@ def main():
         help="Print a dashed line under the greeting (width matches the longest line).",
     )
     parser.add_argument(
+        "--stairs",
+        action="store_true",
+        help="Render the greeting diagonally, one character per line.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -575,6 +585,8 @@ def main():
         return
     if args.wave:
         message = render_wave(message)
+    if args.stairs:
+        message = render_stairs(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
