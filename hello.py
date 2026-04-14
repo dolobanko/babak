@@ -549,6 +549,37 @@ def render_snakecase(text):
     return "\n".join("_".join(line.lower().split()) for line in normalized.split("\n"))
 
 
+def render_chevron(text):
+    """Wrap each line in pointed chevrons for a callout effect."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    return "\n".join(f">> {line.center(width)} <<" for line in lines)
+
+
+def render_receipt(text):
+    """Display the greeting like a tiny printed receipt."""
+    lines = text.split("\n")
+    header = "BABAK RECEIPT"
+    footer = "THANK YOU"
+    width = max(len(line) for line in [*lines, header, footer])
+    border = "+" + "-" * (width + 4) + "+"
+    divider = "|" + "-" * (width + 4) + "|"
+    body = [
+        border,
+        f"|  {header.center(width)}  |",
+        divider,
+    ]
+    body.extend(f"|  {line.ljust(width)}  |" for line in lines)
+    body.extend(
+        [
+            divider,
+            f"|  {footer.center(width)}  |",
+            border,
+        ]
+    )
+    return "\n".join(body)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -783,6 +814,16 @@ def main():
         help="Convert the greeting text to snake_case.",
     )
     parser.add_argument(
+        "--chevron",
+        action="store_true",
+        help="Wrap each line of the greeting in pointed chevrons.",
+    )
+    parser.add_argument(
+        "--receipt",
+        action="store_true",
+        help="Display the greeting like a tiny printed receipt.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -850,6 +891,10 @@ def main():
         message = render_plaque(message)
     if args.snakecase:
         message = render_snakecase(message)
+    if args.chevron:
+        message = render_chevron(message)
+    if args.receipt:
+        message = render_receipt(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

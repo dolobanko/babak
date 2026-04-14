@@ -4,7 +4,9 @@ from hello import (
     VERSION,
     render_alternating,
     render_arcade,
+    render_chevron,
     render_plaque,
+    render_receipt,
     render_ribbon,
     render_snakecase,
     render_titlecase,
@@ -130,6 +132,15 @@ class TestHello(unittest.TestCase):
 
     def test_render_snakecase_normalizes_words_and_hyphens(self):
         self.assertEqual(render_snakecase("Hello-There Babak"), "hello_there_babak")
+
+    def test_render_chevron_wraps_each_line_with_markers(self):
+        self.assertEqual(render_chevron("Hi\nYo"), ">> Hi <<\n>> Yo <<")
+
+    def test_render_receipt_formats_message_like_printout(self):
+        self.assertEqual(
+            render_receipt("Hi"),
+            "+-----------------+\n|  BABAK RECEIPT  |\n|-----------------|\n|  Hi             |\n|-----------------|\n|    THANK YOU    |\n+-----------------+",
+        )
 
 if __name__ == "__main__":
     unittest.main()
