@@ -2,8 +2,10 @@ import unittest
 
 from hello import (
     VERSION,
+    rot13_text,
     render_alternating,
     render_arcade,
+    render_bracket,
     render_cinema,
     render_chevron,
     render_hologram,
@@ -28,7 +30,13 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.41")
+        self.assertEqual(VERSION, "1.0.44")
+
+    def test_rot13_text_round_trips(self):
+        self.assertEqual(rot13_text(rot13_text("Hello, World!")), "Hello, World!")
+
+    def test_rot13_text_preserves_non_letters(self):
+        self.assertEqual(rot13_text("Hi123!"), "Uv123!")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -155,6 +163,9 @@ class TestHello(unittest.TestCase):
             render_cinema("Hi"),
             "*================*\n|  NOW SHOWING   |\n|                |\n|       Hi       |\n|                |\n|  BABAK CINEMA  |\n*================*",
         )
+
+    def test_render_bracket_wraps_each_line(self):
+        self.assertEqual(render_bracket("Hi\nYo"), "[ Hi ]\n[ Yo ]")
 
 if __name__ == "__main__":
     unittest.main()

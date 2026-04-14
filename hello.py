@@ -1,11 +1,12 @@
 import argparse
+import codecs
 import math
 import random
 import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.43"
+VERSION = "1.0.44"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -124,6 +125,11 @@ def glitch_text(text, intensity=0.35):
 
 
 ZALGO_MARKS = [chr(c) for c in range(0x0300, 0x036F)]
+
+
+def rot13_text(text):
+    """Classic Caesar cipher with a 13-letter offset (letters only)."""
+    return codecs.decode(text, "rot_13")
 
 
 def zalgo_text(text, intensity=3):
@@ -764,6 +770,11 @@ def main():
         help="Corrupt some letters into l33t speak (stochastic).",
     )
     parser.add_argument(
+        "--rot13",
+        action="store_true",
+        help="Encode the greeting with ROT13 (letters only; punctuation unchanged).",
+    )
+    parser.add_argument(
         "--owl",
         action="store_true",
         help="Summon a tiny ASCII owl before the greeting.",
@@ -923,6 +934,8 @@ def main():
         apply_chaos(args)
     greeting = LANG_GREETINGS[args.lang] if args.lang else args.greeting
     message = greet(args.name, uppercase=args.uppercase, greeting=greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
+    if args.rot13:
+        message = rot13_text(message)
     if args.glitch:
         message = glitch_text(message)
     if args.zalgo:
