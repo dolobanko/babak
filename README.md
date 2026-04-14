@@ -4,6 +4,8 @@ Last updated: Mon Apr 13 2026
 
 Testing branch policies for origin.
 
+This repository is used for small CLI and workflow experiments.
+
 ## Scripts
 
 - `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, a custom `--greeting`, `--color` output, `--timestamp` to prepend the current time, `--border` support for both single-line and multi-line output, and a `--version` flag
