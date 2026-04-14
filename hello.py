@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.32"
+VERSION = "1.0.33"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -453,6 +453,30 @@ def render_double_border(text):
     return wrap_with_border(wrap_with_border(text))
 
 
+def render_arcade(text):
+    """Frame the greeting like a tiny retro arcade cabinet screen."""
+    lines = text.split("\n")
+    title = "BABAK ARCADE"
+    footer_line = "CREDITS: 01   PRESS START"
+    width = max(len(line) for line in [*lines, title, footer_line])
+    border = "." + "=" * (width + 4) + "."
+    bottom = "'" + "=" * (width + 4) + "'"
+    body = [
+        border,
+        f"|  {title.center(width)}  |",
+        f"|  {' ' * width}  |",
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            f"|  {' ' * width}  |",
+            f"|  {footer_line.ljust(width)}  |",
+            bottom,
+        ]
+    )
+    return "\n".join(body)
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -652,6 +676,11 @@ def main():
         help="Wrap the greeting in two nested ASCII borders.",
     )
     parser.add_argument(
+        "--arcade",
+        action="store_true",
+        help="Display the greeting like a retro arcade attract screen.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -705,6 +734,8 @@ def main():
         message = render_quote(message)
     if args.double_border:
         message = render_double_border(message)
+    if args.arcade:
+        message = render_arcade(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

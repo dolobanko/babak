@@ -2,6 +2,7 @@ import unittest
 
 from hello import (
     VERSION,
+    render_arcade,
     greet,
     render_boxed_shadow,
     render_double_border,
@@ -17,7 +18,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.32")
+        self.assertEqual(VERSION, "1.0.33")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -89,6 +90,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_double_border("Hi"),
             "+--------+\n| +----+ |\n| | Hi | |\n| +----+ |\n+--------+",
+        )
+
+    def test_render_arcade_wraps_message_in_retro_scoreboard(self):
+        self.assertEqual(
+            render_arcade("Hi"),
+            ".=============================.\n|         BABAK ARCADE        |\n|                             |\n|              Hi             |\n|                             |\n|  CREDITS: 01   PRESS START  |\n'============================='",
         )
 
 if __name__ == "__main__":
