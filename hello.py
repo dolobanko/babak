@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.27"
+VERSION = "1.0.28"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -391,6 +391,16 @@ def render_stairs(text):
     return "\n".join((" " * i) + ch for i, ch in enumerate(text))
 
 
+def render_mirror(text):
+    """Render the text and its reversed reflection on the next line."""
+    return f"{text}\n{text[::-1]}"
+
+
+def render_spaced(text):
+    """Insert spaces between characters while preserving line breaks."""
+    return "\n".join(" ".join(line) for line in text.split("\n"))
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -550,6 +560,16 @@ def main():
         help="Render the greeting diagonally, one character per line.",
     )
     parser.add_argument(
+        "--mirror",
+        action="store_true",
+        help="Print the greeting and a reversed reflection on the next line.",
+    )
+    parser.add_argument(
+        "--spaced",
+        action="store_true",
+        help="Insert spaces between characters for a stretched-out look.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -587,6 +607,10 @@ def main():
         message = render_wave(message)
     if args.stairs:
         message = render_stairs(message)
+    if args.mirror:
+        message = render_mirror(message)
+    if args.spaced:
+        message = render_spaced(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
