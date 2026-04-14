@@ -2,6 +2,7 @@ import unittest
 
 from hello import (
     VERSION,
+    morse_text,
     rot13_text,
     render_alternating,
     render_arcade,
@@ -30,7 +31,16 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.44")
+        self.assertEqual(VERSION, "1.0.45")
+
+    def test_morse_text_single_word(self):
+        self.assertEqual(morse_text("Hi"), ".... ..")
+
+    def test_morse_text_multiple_words(self):
+        self.assertEqual(
+            morse_text("Hi There"),
+            ".... .. / - .... . .-. .",
+        )
 
     def test_rot13_text_round_trips(self):
         self.assertEqual(rot13_text(rot13_text("Hello, World!")), "Hello, World!")

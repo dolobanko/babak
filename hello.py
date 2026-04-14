@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.44"
+VERSION = "1.0.45"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -130,6 +130,37 @@ ZALGO_MARKS = [chr(c) for c in range(0x0300, 0x036F)]
 def rot13_text(text):
     """Classic Caesar cipher with a 13-letter offset (letters only)."""
     return codecs.decode(text, "rot_13")
+
+
+MORSE = {
+    "A": ".-", "B": "-...", "C": "-.-.", "D": "-..", "E": ".", "F": "..-.",
+    "G": "--.", "H": "....", "I": "..", "J": ".---", "K": "-.-", "L": ".-..",
+    "M": "--", "N": "-.", "O": "---", "P": ".--.", "Q": "--.-", "R": ".-.",
+    "S": "...", "T": "-", "U": "..-", "V": "...-", "W": ".--", "X": "-..-",
+    "Y": "-.--", "Z": "--..",
+    "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-",
+    "5": ".....", "6": "-....", "7": "--...", "8": "---..", "9": "----.",
+}
+
+
+def morse_text(text):
+    """Encode letters and digits as International Morse; words separated by ' / '."""
+
+    def encode_line(line):
+        words = []
+        bucket = []
+        for ch in line.upper():
+            if ch.isspace():
+                if bucket:
+                    words.append(" ".join(bucket))
+                    bucket = []
+            elif ch in MORSE:
+                bucket.append(MORSE[ch])
+        if bucket:
+            words.append(" ".join(bucket))
+        return " / ".join(words)
+
+    return "\n".join(encode_line(ln) for ln in text.split("\n"))
 
 
 def zalgo_text(text, intensity=3):
@@ -775,6 +806,11 @@ def main():
         help="Encode the greeting with ROT13 (letters only; punctuation unchanged).",
     )
     parser.add_argument(
+        "--morse",
+        action="store_true",
+        help="Encode letters and digits as International Morse (words separated by ' / ').",
+    )
+    parser.add_argument(
         "--owl",
         action="store_true",
         help="Summon a tiny ASCII owl before the greeting.",
@@ -936,6 +972,8 @@ def main():
     message = greet(args.name, uppercase=args.uppercase, greeting=greeting, quiet=args.quiet, reverse=args.reverse, separator=args.separator, shout=args.shout)
     if args.rot13:
         message = rot13_text(message)
+    if args.morse:
+        message = morse_text(message)
     if args.glitch:
         message = glitch_text(message)
     if args.zalgo:
