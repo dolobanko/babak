@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.35"
+VERSION = "1.0.37"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -515,6 +515,22 @@ def render_alternating(text):
     return "".join(out)
 
 
+def render_titlecase(text):
+    """Capitalize each word while preserving whitespace and line breaks."""
+    return "\n".join(line.title() for line in text.split("\n"))
+
+
+def render_ribbon(text):
+    """Display the greeting as a small ASCII ribbon banner."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    top = f" /{'-' * (width + 2)}\\"
+    body = [f"< {line.center(width)} >" for line in lines]
+    bottom = f" \\{'-' * (width + 2)}/"
+    tails = "  \\\\  //"
+    return "\n".join([top, *body, bottom, tails])
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -729,6 +745,16 @@ def main():
         help="Alternate character case across letters.",
     )
     parser.add_argument(
+        "--ribbon",
+        action="store_true",
+        help="Display the greeting as a small ASCII ribbon banner.",
+    )
+    parser.add_argument(
+        "--titlecase",
+        action="store_true",
+        help="Capitalize each word in the greeting.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -788,6 +814,10 @@ def main():
         message = render_ticket(message)
     if args.alternating:
         message = render_alternating(message)
+    if args.ribbon:
+        message = render_ribbon(message)
+    if args.titlecase:
+        message = render_titlecase(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
