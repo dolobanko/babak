@@ -1,10 +1,10 @@
 import unittest
 
-from hello import VERSION, greet, render_mirror, render_shadow, render_spaced, render_stairs, wrap_with_border
+from hello import VERSION, greet, render_boxed_shadow, render_flipcase, render_mirror, render_shadow, render_spaced, render_stairs, wrap_with_border
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.29")
+        self.assertEqual(VERSION, "1.0.30")
 
     def test_greet_quiet(self):
         self.assertEqual(greet("Alice", quiet=True), "Hello, Alice")
@@ -50,6 +50,15 @@ class TestHello(unittest.TestCase):
 
     def test_render_shadow_offsets_multiline_copy(self):
         self.assertEqual(render_shadow("Hi\nYo"), "Hi\nYo\n Hi\n Yo")
+
+    def test_render_flipcase_swaps_letter_case(self):
+        self.assertEqual(render_flipcase("Hi, ALIce!"), "hI, aliCE!")
+
+    def test_render_boxed_shadow_wraps_then_offsets_border(self):
+        self.assertEqual(
+            render_boxed_shadow("Hi"),
+            "+----+\n| Hi |\n+----+\n +----+\n | Hi |\n +----+",
+        )
 
 if __name__ == "__main__":
     unittest.main()

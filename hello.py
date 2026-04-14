@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.29"
+VERSION = "1.0.30"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -408,6 +408,18 @@ def render_shadow(text):
     return f"{text}\n{shadow}"
 
 
+def render_flipcase(text):
+    """Swap uppercase and lowercase characters while leaving other chars intact."""
+    return "".join(ch.lower() if ch.isupper() else ch.upper() if ch.islower() else ch for ch in text)
+
+
+def render_boxed_shadow(text):
+    """Wrap the text in a border and add a shadow line beneath each row."""
+    bordered = wrap_with_border(text)
+    shadow = "\n".join(f" {line}" for line in bordered.split("\n"))
+    return f"{bordered}\n{shadow}"
+
+
 def wrap_with_border(text):
     """Wrap single-line or multi-line text in an ASCII border."""
     lines = text.split("\n")
@@ -582,6 +594,16 @@ def main():
         help="Print the greeting with a one-space-offset shadow underneath.",
     )
     parser.add_argument(
+        "--flipcase",
+        action="store_true",
+        help="Swap uppercase and lowercase characters in the greeting.",
+    )
+    parser.add_argument(
+        "--boxed-shadow",
+        action="store_true",
+        help="Wrap the greeting in a border and print a shadow copy underneath.",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {VERSION}",
@@ -625,6 +647,10 @@ def main():
         message = render_spaced(message)
     if args.shadow:
         message = render_shadow(message)
+    if args.flipcase:
+        message = render_flipcase(message)
+    if args.boxed_shadow:
+        message = render_boxed_shadow(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

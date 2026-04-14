@@ -8,7 +8,7 @@ This repository is used for small CLI and workflow experiments.
 
 ## Scripts
 
-- `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, a custom `--greeting`, `--color` output, `--timestamp` to prepend the current time, `--border` support for both single-line and multi-line output, `--shadow` for a simple offset echo, and a `--version` flag
+- `hello.py` — CLI greeter with optional name argument, `--uppercase` mode, a custom `--greeting`, `--color` output, `--timestamp` to prepend the current time, `--border` support for both single-line and multi-line output, `--shadow` for a simple offset echo, `--flipcase` to invert letter case, `--boxed-shadow` for a bordered drop-shadow variant, and a `--version` flag
 - `hello_world.py` — simple Hello World entry point
 - `test_hello.py` — unit tests for the greeter
 
@@ -22,6 +22,8 @@ python hello.py Alice --greeting Hi
 python hello.py Alice --color cyan
 python hello.py Alice --timestamp
 python hello.py Alice --shadow
+python hello.py Alice --flipcase
+python hello.py Alice --boxed-shadow
 python hello.py --version
 python hello_world.py
 ```
