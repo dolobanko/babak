@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.46"
+VERSION = "1.0.47"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -693,6 +693,16 @@ def render_constellation(text):
     return "\n".join(body)
 
 
+def render_capsule(text):
+    """Wrap each line in a rounded capsule style."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    top = "/" + "-" * (width + 2) + "\\"
+    bottom = "\\" + "-" * (width + 2) + "/"
+    body = [f"( {line.center(width)} )" for line in lines]
+    return "\n".join([top, *body, bottom])
+
+
 def typewriter_print(text, speed=0.04):
     """Print text one character at a time with a typewriter effect."""
     for ch in text:
@@ -984,6 +994,11 @@ def main():
         help="Display the greeting like a tiny star chart.",
     )
     parser.add_argument(
+        "--capsule",
+        action="store_true",
+        help="Wrap the greeting in a rounded capsule.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1072,6 +1087,8 @@ def main():
         message = render_bracket(message)
     if args.constellation:
         message = render_constellation(message)
+    if args.capsule:
+        message = render_capsule(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

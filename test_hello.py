@@ -7,6 +7,7 @@ from hello import (
     render_alternating,
     render_arcade,
     render_bracket,
+    render_capsule,
     render_constellation,
     render_cinema,
     render_chevron,
@@ -32,7 +33,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.46")
+        self.assertEqual(VERSION, "1.0.47")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
@@ -182,6 +183,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_constellation("Hi"),
             "*.....................*\n:  CONSTELLATION LOG  :\n:  ·················  :\n:          Hi         :\n:  *               *  :\n:  BABAK OBSERVATORY  :\n*.....................*",
+        )
+
+    def test_render_capsule_wraps_each_line_in_rounded_frame(self):
+        self.assertEqual(
+            render_capsule("Hi\nYo"),
+            "/----\\\n( Hi )\n( Yo )\n\\----/",
         )
 
 if __name__ == "__main__":
