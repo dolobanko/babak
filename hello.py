@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.45"
+VERSION = "1.0.46"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -670,6 +670,29 @@ def render_bracket(text):
     return "\n".join(f"[ {line} ]" for line in text.split("\n"))
 
 
+def render_constellation(text):
+    """Display the greeting like a tiny star chart."""
+    lines = text.split("\n")
+    header = "CONSTELLATION LOG"
+    footer = "BABAK OBSERVATORY"
+    width = max(len(line) for line in [*lines, header, footer])
+    border = "*" + "." * (width + 4) + "*"
+    body = [
+        border,
+        f":  {header.center(width)}  :",
+        f":  {'·' * width}  :",
+    ]
+    body.extend(f":  {line.center(width)}  :" for line in lines)
+    body.extend(
+        [
+            f":  {'*' + ' ' * (width - 2) + '* ' if width >= 2 else '**'} :",
+            f":  {footer.center(width)}  :",
+            border,
+        ]
+    )
+    return "\n".join(body)
+
+
 def typewriter_print(text, speed=0.04):
     """Print text one character at a time with a typewriter effect."""
     for ch in text:
@@ -956,6 +979,11 @@ def main():
         help="Wrap each line of the greeting in square brackets.",
     )
     parser.add_argument(
+        "--constellation",
+        action="store_true",
+        help="Display the greeting like a tiny star chart.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1042,6 +1070,8 @@ def main():
         message = render_cinema(message)
     if args.bracket:
         message = render_bracket(message)
+    if args.constellation:
+        message = render_constellation(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
