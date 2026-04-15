@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.47"
+VERSION = "1.0.48"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -28,6 +28,8 @@ LANG_GREETINGS = {
     "tr": "Merhaba",
     "elvish": "Mae govannen",
     "pl": "Cześć",
+    "nl": "Hallo",
+    "fi": "Hei",
 }
 
 OWL_ASCII = r"""
