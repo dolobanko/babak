@@ -6,6 +6,7 @@ from hello import (
     rot13_text,
     render_alternating,
     render_arcade,
+    render_blueprint,
     render_bracket,
     render_capsule,
     render_moonlight,
@@ -34,7 +35,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.49")
+        self.assertEqual(VERSION, "1.0.50")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
@@ -196,6 +197,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_moonlight("Hi"),
             "      _..._\n    .:::::::.     *\n   :::::::::::        .\n.~~~~~~~~~~~~~~~~~~~~~~~.\n|    MOONLIGHT SIGNAL   |\n|           Hi          |\n|  drift gently onward  |\n'~~~~~~~~~~~~~~~~~~~~~~~'\n      \\\\   //\n       \\\\_//",
+        )
+
+    def test_render_blueprint_displays_technical_drawing_panel(self):
+        self.assertEqual(
+            render_blueprint("Hi"),
+            "+=========================+\n|  BLUEPRINT // GREETING  |\n|  .....................  |\n|            Hi           |\n|  .....................  |\n|  scale 1:1  babak labs  |\n+=========================+",
         )
 
 if __name__ == "__main__":

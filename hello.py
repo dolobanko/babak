@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.49"
+VERSION = "1.0.50"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -735,6 +735,29 @@ def render_moonlight(text):
     return "\n".join(body)
 
 
+def render_blueprint(text):
+    """Display the greeting like a tiny technical drawing."""
+    lines = text.split("\n")
+    header = "BLUEPRINT // GREETING"
+    footer = "scale 1:1  babak labs"
+    width = max(len(line) for line in [*lines, header, footer])
+    border = "+" + "=" * (width + 4) + "+"
+    body = [
+        border,
+        f"|  {header.ljust(width)}  |",
+        f"|  {'.' * width}  |",
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            f"|  {'.' * width}  |",
+            f"|  {footer.rjust(width)}  |",
+            border,
+        ]
+    )
+    return "\n".join(body)
+
+
 def typewriter_print(text, speed=0.04):
     """Print text one character at a time with a typewriter effect."""
     for ch in text:
@@ -1036,6 +1059,11 @@ def main():
         help="Display the greeting as a calm midnight signal.",
     )
     parser.add_argument(
+        "--blueprint",
+        action="store_true",
+        help="Display the greeting like a tiny technical drawing.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1128,6 +1156,8 @@ def main():
         message = render_capsule(message)
     if args.moonlight:
         message = render_moonlight(message)
+    if args.blueprint:
+        message = render_blueprint(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
