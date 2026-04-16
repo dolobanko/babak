@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.48"
+VERSION = "1.0.49"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -705,6 +705,36 @@ def render_capsule(text):
     return "\n".join([top, *body, bottom])
 
 
+def render_moonlight(text):
+    """Display the greeting as a calm midnight scene."""
+    lines = text.split("\n")
+    header = "MOONLIGHT SIGNAL"
+    footer = "drift gently onward"
+    width = max(len(line) for line in [*lines, header, footer])
+    top = "      _..._"
+    moon = "    .:::::::.     *"
+    sky = "   :::::::::::        ."
+    border = "." + "~" * (width + 4) + "."
+    bottom = "'" + "~" * (width + 4) + "'"
+    body = [
+        top,
+        moon,
+        sky,
+        border,
+        f"|  {header.center(width)}  |",
+    ]
+    body.extend(f"|  {line.center(width)}  |" for line in lines)
+    body.extend(
+        [
+            f"|  {footer.center(width)}  |",
+            bottom,
+            "      \\\\   //",
+            "       \\\\_//",
+        ]
+    )
+    return "\n".join(body)
+
+
 def typewriter_print(text, speed=0.04):
     """Print text one character at a time with a typewriter effect."""
     for ch in text:
@@ -1001,6 +1031,11 @@ def main():
         help="Wrap the greeting in a rounded capsule.",
     )
     parser.add_argument(
+        "--moonlight",
+        action="store_true",
+        help="Display the greeting as a calm midnight signal.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1091,6 +1126,8 @@ def main():
         message = render_constellation(message)
     if args.capsule:
         message = render_capsule(message)
+    if args.moonlight:
+        message = render_moonlight(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []

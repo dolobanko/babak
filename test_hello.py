@@ -8,6 +8,7 @@ from hello import (
     render_arcade,
     render_bracket,
     render_capsule,
+    render_moonlight,
     render_constellation,
     render_cinema,
     render_chevron,
@@ -33,7 +34,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.47")
+        self.assertEqual(VERSION, "1.0.49")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
@@ -189,6 +190,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_capsule("Hi\nYo"),
             "/----\\\n( Hi )\n( Yo )\n\\----/",
+        )
+
+    def test_render_moonlight_displays_midnight_scene(self):
+        self.assertEqual(
+            render_moonlight("Hi"),
+            "      _..._\n    .:::::::.     *\n   :::::::::::        .\n.~~~~~~~~~~~~~~~~~~~~~~~.\n|    MOONLIGHT SIGNAL   |\n|           Hi          |\n|  drift gently onward  |\n'~~~~~~~~~~~~~~~~~~~~~~~'\n      \\\\   //\n       \\\\_//",
         )
 
 if __name__ == "__main__":
