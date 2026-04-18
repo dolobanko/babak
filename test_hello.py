@@ -6,6 +6,7 @@ from hello import (
     rot13_text,
     render_alternating,
     render_arcade,
+    render_badge,
     render_blueprint,
     render_bracket,
     render_capsule,
@@ -35,7 +36,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.50")
+        self.assertEqual(VERSION, "1.0.51")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
@@ -203,6 +204,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_blueprint("Hi"),
             "+=========================+\n|  BLUEPRINT // GREETING  |\n|  .....................  |\n|            Hi           |\n|  .....................  |\n|  scale 1:1  babak labs  |\n+=========================+",
+        )
+
+    def test_render_badge_displays_conference_name_tag(self):
+        self.assertEqual(
+            render_badge("Hi"),
+            "+====================+\n|  HELLO MY NAME IS  |\n|--------------------|\n|         Hi         |\n|--------------------|\n|    babak meetup    |\n+====================+",
         )
 
 if __name__ == "__main__":
