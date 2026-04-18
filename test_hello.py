@@ -1,6 +1,7 @@
 import unittest
 
 from hello import (
+    LANG_GREETINGS,
     VERSION,
     morse_text,
     rot13_text,
@@ -37,7 +38,10 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.52")
+        self.assertEqual(VERSION, "1.0.55")
+
+    def test_lang_greetings_includes_welsh(self):
+        self.assertEqual(LANG_GREETINGS["cy"], "Helo")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
