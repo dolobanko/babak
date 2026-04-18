@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.55"
+VERSION = "1.0.58"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -31,6 +31,8 @@ LANG_GREETINGS = {
     "nl": "Hallo",
     "fi": "Hei",
     "cy": "Helo",
+    "cs": "Ahoj",
+    "da": "Hej",
 }
 
 OWL_ASCII = r"""
@@ -807,6 +809,27 @@ def render_dossier(text):
     return "\n".join(body)
 
 
+def render_reverse_words(text):
+    """Reverse word order within each line, preserving line breaks."""
+    return "\n".join(" ".join(line.split()[::-1]) for line in text.split("\n"))
+
+
+def render_dots(text):
+    """Join characters with dots, preserving line breaks."""
+    return "\n".join(".".join(line) for line in text.split("\n"))
+
+
+def render_compass(text):
+    """Display the greeting framed by cardinal directions."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    pad = max(width, 9)
+    north = "N".center(pad + 4)
+    south = "S".center(pad + 4)
+    body = [f"W  {line.center(pad)}  E" for line in lines]
+    return "\n".join([north, *body, south])
+
+
 def render_lantern(text):
     """Display the greeting like a hanging paper lantern."""
     lines = text.split("\n")
@@ -1157,6 +1180,21 @@ def main():
         help="Display the greeting like a hanging paper lantern.",
     )
     parser.add_argument(
+        "--compass",
+        action="store_true",
+        help="Frame the greeting with cardinal directions.",
+    )
+    parser.add_argument(
+        "--dots",
+        action="store_true",
+        help="Join characters with dots.",
+    )
+    parser.add_argument(
+        "--reverse-words",
+        action="store_true",
+        help="Reverse word order within each line.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1185,7 +1223,7 @@ def main():
     if args.owl:
         message = OWL_ASCII.strip("\n") + "\n" + message
     if args.emoji:
-        emojis = ["👋", "🎉", "🌟", "🚀", "✨", "😊", "🔥", "💡", "🎯", "🌈"]
+        emojis = ["👋", "🎉", "🌟", "🚀", "✨", "😊", "🔥", "💡", "🎯", "🌈", "🦄"]
         message = f"{random.choice(emojis)} {message}"
     if args.figlet:
         message = render_block(message)
@@ -1259,6 +1297,12 @@ def main():
         message = render_scroll(message)
     if args.lantern:
         message = render_lantern(message)
+    if args.compass:
+        message = render_compass(message)
+    if args.dots:
+        message = render_dots(message)
+    if args.reverse_words:
+        message = render_reverse_words(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
