@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.53"
+VERSION = "1.0.54"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -806,6 +806,19 @@ def render_dossier(text):
     return "\n".join(body)
 
 
+def render_lantern(text):
+    """Display the greeting like a hanging paper lantern."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    hook = "    |"
+    cap = "  .===.  "
+    top = "." + "-" * (width + 4) + "."
+    bottom = "'" + "-" * (width + 4) + "'"
+    tassel = "   ' | '"
+    body = [f"|  {line.center(width)}  |" for line in lines]
+    return "\n".join([hook.center(width + 6), cap.center(width + 6), top, *body, bottom, tassel.center(width + 6)])
+
+
 def render_scroll(text):
     """Display the greeting like an unrolled parchment scroll."""
     lines = text.split("\n")
@@ -1138,6 +1151,11 @@ def main():
         help="Display the greeting like an unrolled parchment scroll.",
     )
     parser.add_argument(
+        "--lantern",
+        action="store_true",
+        help="Display the greeting like a hanging paper lantern.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1238,6 +1256,8 @@ def main():
         message = render_dossier(message)
     if args.scroll:
         message = render_scroll(message)
+    if args.lantern:
+        message = render_lantern(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
