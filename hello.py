@@ -6,7 +6,7 @@ import sys
 import time
 from datetime import datetime
 
-VERSION = "1.0.52"
+VERSION = "1.0.53"
 
 LANG_GREETINGS = {
     "en": "Hello",
@@ -806,6 +806,17 @@ def render_dossier(text):
     return "\n".join(body)
 
 
+def render_scroll(text):
+    """Display the greeting like an unrolled parchment scroll."""
+    lines = text.split("\n")
+    width = max(len(line) for line in lines)
+    top = "  __" + "_" * (width + 2) + "__"
+    edge_top = " /  " + " " * (width + 2) + "  \\"
+    edge_bottom = " \\__" + "_" * (width + 2) + "__/"
+    body = [f"|   {line.center(width)}   |" for line in lines]
+    return "\n".join([top, edge_top, *body, edge_bottom])
+
+
 def typewriter_print(text, speed=0.04):
     """Print text one character at a time with a typewriter effect."""
     for ch in text:
@@ -1122,6 +1133,11 @@ def main():
         help="Display the greeting like a tiny archived case file.",
     )
     parser.add_argument(
+        "--scroll",
+        action="store_true",
+        help="Display the greeting like an unrolled parchment scroll.",
+    )
+    parser.add_argument(
         "--typewriter",
         action="store_true",
         help="Print the greeting one character at a time with a typewriter effect.",
@@ -1220,6 +1236,8 @@ def main():
         message = render_badge(message)
     if args.dossier:
         message = render_dossier(message)
+    if args.scroll:
+        message = render_scroll(message)
     if args.rainbow:
         rainbow_colors = list(COLORS.values())
         colored_chars = []
