@@ -14,6 +14,7 @@ from hello import (
     render_constellation,
     render_cinema,
     render_chevron,
+    render_dossier,
     render_hologram,
     render_plaque,
     render_receipt,
@@ -36,7 +37,7 @@ from hello import (
 
 class TestHello(unittest.TestCase):
     def test_version_defined(self):
-        self.assertEqual(VERSION, "1.0.51")
+        self.assertEqual(VERSION, "1.0.52")
 
     def test_morse_text_single_word(self):
         self.assertEqual(morse_text("Hi"), ".... ..")
@@ -210,6 +211,12 @@ class TestHello(unittest.TestCase):
         self.assertEqual(
             render_badge("Hi"),
             "+====================+\n|  HELLO MY NAME IS  |\n|--------------------|\n|         Hi         |\n|--------------------|\n|    babak meetup    |\n+====================+",
+        )
+
+    def test_render_dossier_displays_archived_case_file(self):
+        self.assertEqual(
+            render_dossier("Hi"),
+            "+====================+\n|    CASE DOSSIER    |\n|--------------------|\n|  Hi                |\n|--------------------|\n|  status: archived  |\n+====================+",
         )
 
 if __name__ == "__main__":
